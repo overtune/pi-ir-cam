@@ -1,0 +1,29 @@
+{
+  "name": "pi-ir-cam",
+  "version": "1.0.0",
+  "description": "A IR camera with motion sensor and ir-diods controlled by Raspberry pi",
+  "main": "irCam.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/overtune/pi-ir-cam.git"
+  },
+  "keywords": [
+    "ir",
+    "raspberry",
+    "pi",
+    "camera"
+  ],
+  "author": "Johan Runesson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/overtune/pi-ir-cam/issues"
+  },
+  "homepage": "https://github.com/overtune/pi-ir-cam#readme",
+  "dependencies": {
+    "johnny-five": "^0.10.0",
+    "raspi-io": "^6.1.0"
+  }
+}
