@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Module dependencies
  */
@@ -6,6 +8,16 @@ const child_process = require('child_process');
 const raspi = require('raspi-io');
 const five = require('johnny-five');
 const board = new five.Board({io: new raspi()});
+const path = require('path');
+
+
+/*
+ * Variables
+ */
+const photoFolder = path.resolve('./output/photos');
+const movieFolder = path.resolve('./output/movies');
+const photoIntervalTime = 2000;
+let photoInterval = null;
 
 
 /*
@@ -26,7 +38,10 @@ module.exports = (function () {
 			return this;
 		},
 
+
 		_initBoard: function () {
+			let that = this;
+
 			board.on('ready', () => {
 				console.log('Board is ready');
 
@@ -41,13 +56,36 @@ module.exports = (function () {
 				// Motion detected
 				motion.on('motionstart', () => {
 					console.log('motionstart');
+					that._startPhotoCapture();
 				});
 
 				// 'motionend' events
 				motion.on('motionend', () => {
 					console.log('motionend');
+					that._endPhotoCapture();
 				});
 			});
+		},
+
+
+		_startPhotoCapture: function () {
+			let that = this;
+
+			photoInterval = setInterval(function () {
+				let filename = photoFolder + '/image_' + that._getDate() + '.jpg';
+				let args = ['-o', filename, '-t', '1'];
+				let spawn = child_process.spawn('raspistill', args);	
+			}, photoIntervalTime);
+		},
+
+
+		_endPhotoCapture: function () {
+			clearInterval(photoInterval);
+		},
+
+
+		_getDate: function () {
+			return (new Date()).toISOString().substring(0, 19);
 		}
 	};
 
